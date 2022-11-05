@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1499626366 source:d:\src_c\stopwatch\main.cpp
+	<iostream>
+	<string>
+	<sstream>
+	<VBString.h>
+	<Stopwatch.h>
+	<windows.h>
+
+1499627519 source:d:\src_c\stopwatch\src\stopwatch.cpp
+	"Stopwatch.h"
+	<windows.h>
+	<iostream>
+	<string>
+	<sstream>
+	<VBString.h>
+	<ctime>
+
+1499627072 d:\src_c\stopwatch\include\stopwatch.h
+	<iostream>
+	<string>
+	<sstream>
+
+1499596064 d:\src_c\stopwatch\include\vbstring.h
+	<string>
+
+1499625663 source:d:\src_c\stopwatch\src\vbstring.cpp
+	"VBString.h"
+	<string>
+	<sstream>
+
