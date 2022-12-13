@@ -2,16 +2,24 @@ VERSION 5.00
 Begin VB.Form FMain 
    BorderStyle     =   4  'Festes Werkzeugfenster
    Caption         =   "Stopwatch"
-   ClientHeight    =   2535
+   ClientHeight    =   3735
    ClientLeft      =   45
    ClientTop       =   315
    ClientWidth     =   5415
    LinkTopic       =   "FMain"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2535
+   ScaleHeight     =   3735
    ScaleWidth      =   5415
    StartUpPosition =   3  'Windows-Standard
+   Begin VB.CommandButton BtnTest1 
+      Caption         =   "Test 1"
+      Height          =   495
+      Left            =   240
+      TabIndex        =   6
+      Top             =   2640
+      Width           =   1575
+   End
    Begin VB.CommandButton BtnSplittime 
       Caption         =   "Splittime"
       BeginProperty Font 
@@ -120,7 +128,7 @@ Begin VB.Form FMain
       Left            =   720
       TabIndex        =   3
       Top             =   1320
-      Width           =   3975
+      Width           =   4095
    End
 End
 Attribute VB_Name = "FMain"
@@ -132,6 +140,7 @@ Option Explicit
 ' Tester for the stopwatch-class
 Private mSW As StopWatch
 Private mdt As Double
+Private Declare Sub await_Task_Delay Lib "kernel32" Alias "Sleep" (ByVal dwMilliSeconds As Long)
 
 Private Sub Form_Load()
     Me.Caption = "Stopwatch v" & App.Major & "." & App.Minor & "." & App.Revision
@@ -139,21 +148,47 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub BtnTest1_Click()
-    Dim z As Long, v As Double
-    mSW.Start
-    For z = 1 To 10 ^ 7
-        v = Rnd(1)
-    Next
-    MsgBox mSW.ElapsedToString
-    For z = 1 To 10 ^ 7
-        v = Rnd(1)
-    Next
-    MsgBox mSW.ElapsedToString
-    For z = 1 To 10 ^ 7
-        v = Rnd(1)
-    Next
-    mSW.SStop
-    MsgBox mSW.ElapsedToString
+'    Dim z As Long, v As Double
+'    mSW.Start
+'    For z = 1 To 10 ^ 7
+'        v = Rnd(1)
+'    Next
+'    MsgBox mSW.ElapsedToString
+'    For z = 1 To 10 ^ 7
+'        v = Rnd(1)
+'    Next
+'    MsgBox mSW.ElapsedToString
+'    For z = 1 To 10 ^ 7
+'        v = Rnd(1)
+'    Next
+'    mSW.SStop
+'    MsgBox mSW.ElapsedToString
+    
+    'Method 1
+    Dim sw As StopWatch: Set sw = StopWatch.StartNew
+    await_Task_Delay 1000
+    sw.SStop
+    Debug.Print sw.ElapsedToString
+    
+    'Method 2
+    Dim startTime As Currency: startTime = StopWatch.GetTimestamp
+    await_Task_Delay 1000
+    Dim endTime   As Currency:   endTime = StopWatch.GetTimestamp
+    Dim diff As Currency: diff = endTime - startTime
+    Debug.Print diff
+    
+    'Method 3
+    Dim startTime2 As Currency: startTime2 = StopWatch.GetTimestamp
+    await_Task_Delay 1000
+    Dim diff2 As Currency: diff2 = StopWatch.GetElapsedTime(startTime, endTime)
+    Debug.Print diff2
+    
+    'Method 4
+    Dim startTime2 As Currency: startTime2 = StopWatch.GetTimestamp
+    await_Task_Delay 1000
+    Dim diff2 As Currency: diff2 = StopWatch.GetElapsedTime(startTime, endTime)
+    Debug.Print diff2
+    
 End Sub
 
 Private Sub BtnStartStop_Click()

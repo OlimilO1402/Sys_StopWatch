@@ -13,21 +13,19 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 'Class System.Diagnostics.StopWatch
-'Der Datentyp Currency in VB ist ein 64Bit-Datentyp mit einem
-'Festpunktanteil. D.h. beim Bitwert &H2710 (bzw decimal 10000)
-'ist der Wert 1 definiert, bzw. der kleinste positive Wert des
-'Datentyps Currency ist 0.0001
+'The datatype Currency in VB is a 64Bit-Datatype with a fixed point
+'part. this means at the Bit.value &H2710 (resp decimal 10000) the value 1
+'is defined. The smallest positive value of currency is 0.0001
 
-'Da die Einheit Ticks ebenfalls den Parameter 10000 beinhaltet,
-'ist der VB-Datentyp Currency genau der richtige Datentyp für
-'Zeitmessungen mit der QueryPerformance-API
+'because ticks contains the factor 10000 as well, so the VB-datatype Currency
+'is the right datatype for time measurements wit hthe QueryPerformance-API
 
-'Der Korrekturfaktor für den Datentyp Currency:
+'the correcting factor for the datatype Currency:
 Private Const CurCorrect          As Long = 10000
 Private Const TicksPerMillisecond As Long = 10000 / CurCorrect '= 1 '&H2710
 Private Const TicksPerSecond      As Long = 10000000 / CurCorrect   '&H989680
 
-'In der gleichnamigen .Net-Klasse wird hier der Datentyp Long, bzw Int64 verwendet.
+'in the .net class of the same name here the datatype long resp Int64 will be used.
 Private m_elapsed          As Currency
 Private m_startTimeStamp   As Currency
 Private m_isRunning        As Boolean
@@ -88,6 +86,11 @@ Public Function GetTimestamp() As Currency
     GetTimestamp = pGetTimestamp * CurCorrect
 End Function
 
+Public Function GetElapsedTime(ByVal startTimeStamp As Currency, Optional ByVal endTimeStamp As Currency = -1) As Currency
+    If endTimeStamp < 0 Then endTimeStamp = GetTimestamp
+    GetElapsedTime = endTimeStamp - startTimeStamp
+End Function
+
 Public Sub Start()
     If Not m_isRunning Then
         m_startTimeStamp = pGetTimestamp
@@ -121,7 +124,7 @@ Private Function pGetTimestamp() As Currency
     If m_isHighResolution Then
         QueryPerformanceCounter pGetTimestamp
     Else
-        pGetTimestamp = Timer 'DateTime.Now 'oder Timer
+        pGetTimestamp = Timer 'DateTime.Now 'or Timer
     End If
 End Function
 
